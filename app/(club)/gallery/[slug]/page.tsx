@@ -1,12 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ALBUMS, getAlbum } from '../../../../lib/gallery';
+import { getAlbum } from '../../../../lib/gallery';
 import AlbumGrid from '../../../../components/AlbumGrid';
 import LayoutSwitch, { readLayout, withLayout } from '../../../../components/LayoutSwitch';
 
-export function generateStaticParams() {
-  return ALBUMS.map((a) => ({ slug: a.slug }));
-}
 
 export default async function AlbumPage({
   params,

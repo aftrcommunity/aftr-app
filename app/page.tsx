@@ -19,8 +19,7 @@ export default function Welcome() {
           <Link className="wbtn wbtn-fill" href="/join">
             Join the community →
           </Link>
-          {/* Until logins are built this goes straight in, so the screens can be tested */}
-          <Link className="wbtn wbtn-outline" href="/home">
+          <Link className="wbtn wbtn-outline" href="/login">
             I&apos;m already a member
           </Link>
           <p className="hero-wordmark">AFTR. Community</p>

@@ -1,18 +1,25 @@
 import Link from 'next/link';
 import TabBar from '../../components/TabBar';
+import { requireApprovedMember, initials, TIER_LABEL } from '../../lib/member';
 
-// Shell for the signed-in part of the app: top bar + tab bar.
-// The tier pill is a placeholder until logins and membership tiers are wired up.
-export default function ClubLayout({ children }: { children: React.ReactNode }) {
+// Checked on every visit: never pre-built, never cached.
+export const dynamic = 'force-dynamic';
+
+// Shell for the members-only part of the app: top bar + tab bar.
+// Anyone who isn't an approved member is sent to sign in, apply, or the waiting screen.
+export default async function ClubLayout({ children }: { children: React.ReactNode }) {
+  const { profile } = await requireApprovedMember();
+  const tier = TIER_LABEL[profile.tier].replace('The ', '');
+
   return (
     <>
       <header className="topbar">
         <Link href="/home" aria-label="AFTR. home">
           <img src="/images/logo.png" alt="AFTR." />
         </Link>
-        <span className="tier-pill">
-          Club <span className="initials">NA</span>
-        </span>
+        <Link href="/card" className="tier-pill">
+          {tier} <span className="initials">{initials(profile.display_name)}</span>
+        </Link>
       </header>
       {children}
       <TabBar />
