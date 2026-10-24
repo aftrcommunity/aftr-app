@@ -19,7 +19,8 @@ export default async function Events({ searchParams }: { searchParams: Promise<{
       {!town ? (
         <>
           <p className="muted intro">
-            Exact venues are shared privately with confirmed members closer to each date.
+            Exact venues are shared privately with confirmed members closer to each date. On{' '}
+            <span className="flag-inline">Flagship</span> events, The Club gets 50% off and The Inner Circle gets in free.
           </p>
           <div className="event-list">
             {AFTR_EVENTS.map((e) => (
@@ -38,6 +39,7 @@ export default async function Events({ searchParams }: { searchParams: Promise<{
                 <div className="event-body">
                   <div className="event-date">
                     {formatDate(e.date)}
+                    {e.flagship && <span className="tag tag-flag">Flagship</span>}
                     {e.sample && <span className="tag">Sample</span>}
                   </div>
                   <h2 className="event-title">{e.title}</h2>

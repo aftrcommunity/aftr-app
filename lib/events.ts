@@ -10,6 +10,7 @@ export type AftrEvent = {
   photoPosition?: string;
   ticketUrl?: string; // external ticket link, when there is one
   sample?: boolean; // placeholder content, not a confirmed event
+  flagship?: boolean; // Club 50% off, Inner Circle free entry
 };
 
 // AFTR.'s own events — details as on aftr.community/events
@@ -21,6 +22,7 @@ export const AFTR_EVENTS: AftrEvent[] = [
     tagline: 'A Fairytale Halloween Parté.',
     photo: '/images/events/happily-ever-aftr.jpg',
     photoPosition: 'center 40%',
+    flagship: true,
   },
   {
     id: 'wdgd-7-detty-december',
