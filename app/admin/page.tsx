@@ -42,6 +42,8 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
   const { data, error } = await supabase.rpc('admin_applicants');
   const rows = ((data ?? []) as Row[]).filter((r) => (view === 'review' ? r.status === 'applicant' : true));
   const waiting = ((data ?? []) as Row[]).filter((r) => r.status === 'applicant').length;
+  const { data: reports } = await supabase.rpc('admin_reports');
+  const openReports = (reports ?? []).length;
 
   return (
     <main className="page admin">
@@ -51,6 +53,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
       <div className="seg" style={{ marginBottom: 16 }}>
         <Link href="/admin" className={view === 'review' ? 'on' : ''}>To review ({waiting})</Link>
         <Link href="/admin?view=all" className={view === 'all' ? 'on' : ''}>Everyone</Link>
+        <Link href="/admin/reports">Reports ({openReports})</Link>
       </div>
 
       {error && <p className="form-error">Couldn&apos;t load applications: {error.message}</p>}
