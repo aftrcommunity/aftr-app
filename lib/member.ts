@@ -12,6 +12,11 @@ export type Profile = {
   paid_until: string | null;
   member_number: number;
   is_admin: boolean;
+  approved_at?: string | null;
+  // Added in update 4 (may be missing until 004_team_and_cards.sql has been run)
+  is_team?: boolean;
+  team_title?: string | null;
+  team_email?: string | null;
 };
 
 export const TIER_LABEL: Record<Tier, string> = {
@@ -29,7 +34,7 @@ export async function getMember() {
   if (!user) return { supabase, user: null, profile: null, applied: false };
 
   const [{ data: profile }, { data: application }] = await Promise.all([
-    supabase.from('profiles').select('id, display_name, status, tier, paid_until, member_number, is_admin').eq('id', user.id).maybeSingle(),
+    supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
     supabase.from('applications').select('user_id').eq('user_id', user.id).maybeSingle(),
   ]);
   return { supabase, user, profile: profile as Profile | null, applied: !!application };

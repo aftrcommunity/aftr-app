@@ -24,3 +24,15 @@ export async function review(form: FormData) {
   });
   revalidatePath('/admin');
 }
+
+// Add or remove someone from the AFTR. team (database refuses non-admins)
+export async function setTeam(form: FormData) {
+  const supabase = await supabaseServer();
+  await supabase.rpc('set_team', {
+    member: String(form.get('user_id')),
+    on_team: form.get('is_team') === 'on',
+    title: String(form.get('team_title') || '').slice(0, 60) || null,
+    email: String(form.get('team_email') || '').slice(0, 120) || null,
+  });
+  revalidatePath('/admin');
+}

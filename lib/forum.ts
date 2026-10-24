@@ -12,8 +12,8 @@ export type ChannelId = (typeof CHANNELS)[number]['id'];
 export const channelLabel = (id: string) => CHANNELS.find((c) => c.id === id)?.label ?? id;
 export const isChannel = (id: string): id is ChannelId => CHANNELS.some((c) => c.id === id);
 
-// Mirrors the database rule can_use_back_room(): The Club, The Inner Circle, and admins
-export const canUseBackRoom = (p: Profile) => p.is_admin || p.tier === 'club' || p.tier === 'inner_circle';
+// Mirrors the database rule can_use_back_room(): The Club, The Inner Circle, the team, and admins
+export const canUseBackRoom = (p: Profile) => p.is_admin || !!p.is_team || p.tier === 'club' || p.tier === 'inner_circle';
 
 export type Thread = {
   id: number;
@@ -22,6 +22,7 @@ export type Thread = {
   body: string;
   author_id: string;
   author_name: string | null;
+  author_is_team?: boolean;
   reply_count: number;
   created_at: string;
   last_activity_at: string;
@@ -34,6 +35,7 @@ export type Reply = {
   body: string;
   author_id: string;
   author_name: string | null;
+  author_is_team?: boolean;
   created_at: string;
   hidden: boolean;
 };

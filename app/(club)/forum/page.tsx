@@ -11,7 +11,7 @@ export default async function Forum({ searchParams }: { searchParams: Promise<{ 
   const channel = isChannel(c) ? c : null;
   let q = supabase
     .from('forum_threads')
-    .select('id, channel, title, body, author_name, reply_count, created_at, last_activity_at, hidden')
+    .select('*')
     .order('last_activity_at', { ascending: false })
     .limit(50);
   if (channel) q = q.eq('channel', channel);
@@ -54,6 +54,7 @@ export default async function Forum({ searchParams }: { searchParams: Promise<{ 
               <span className="thread-excerpt">{t.body}</span>
               <span className="thread-meta">
                 {t.reply_count} {t.reply_count === 1 ? 'reply' : 'replies'} · started by {t.author_name ?? 'a member'}
+                {t.author_is_team && <span className="team-badge">Team</span>}
                 {t.hidden && ' · removed (only admins see this)'}
               </span>
             </Link>

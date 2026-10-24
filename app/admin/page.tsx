@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getMember, TIER_LABEL, type Status, type Tier } from '../../lib/member';
-import { review } from './actions';
+import { review, setTeam } from './actions';
 import { tierInfo } from '../../lib/tiers';
 
 type Row = {
@@ -19,6 +19,9 @@ type Row = {
   why_aftr: string | null;
   submitted_at: string | null;
   requested_tier: Tier | null;
+  is_team?: boolean;
+  team_title?: string | null;
+  team_email?: string | null;
   notes: string[];
 };
 
@@ -78,6 +81,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
                 {STATUS_LABEL[r.status]}
                 {r.status === 'approved' && ` · ${TIER_LABEL[r.tier].replace('The ', '')}`}
               </span>
+              {r.is_team && <span className="team-badge">Team</span>}
             </div>
 
             <dl className="admin-facts">
@@ -135,6 +139,29 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
                 )}
               </div>
             </form>
+            {r.status === 'approved' && (
+              <form action={setTeam} className="admin-form team-form">
+                <input type="hidden" name="user_id" value={r.user_id} />
+                <label className="check">
+                  <input type="checkbox" name="is_team" defaultChecked={!!r.is_team} />
+                  <span>
+                    <strong>AFTR. team</strong> — access to everything, a Team badge in the Back Room, and the team card. Doesn&apos;t
+                    give access to this review queue.
+                  </span>
+                </label>
+                <div className="admin-row">
+                  <label className="field">
+                    <span className="label">Title on card</span>
+                    <input name="team_title" maxLength={60} defaultValue={r.team_title ?? ''} placeholder="e.g. Founder" />
+                  </label>
+                  <label className="field">
+                    <span className="label">Work email on card</span>
+                    <input name="team_email" type="email" maxLength={120} defaultValue={r.team_email ?? ''} placeholder="name@aftr.community" />
+                  </label>
+                </div>
+                <button className="wbtn wbtn-outline">Save team details</button>
+              </form>
+            )}
           </article>
         ))}
       </div>

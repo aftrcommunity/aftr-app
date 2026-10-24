@@ -296,3 +296,61 @@ button { font-family: inherit; color: inherit; }
 .locked-tiers strong { color: var(--pink-soft); margin-right: 6px; }
 .wbtn.wbtn-outline { border: 1px solid rgba(248, 241, 247, 0.35); background: transparent; color: var(--text); }
 .wbtn.wbtn-outline:hover { border-color: var(--lime); color: var(--lime); }
+
+/* ── Membership cards (from Eni's card designs) ───────────────────────── */
+.card-section { margin-bottom: 18px; }
+.card-heading { margin-bottom: 8px; color: var(--lime); }
+.flip-card { display: block; width: 100%; aspect-ratio: 85 / 54; padding: 0; border: 0; background: none; cursor: pointer; perspective: 1400px; container-type: inline-size; color: inherit; font: inherit; text-align: left; }
+.flip-inner { position: relative; display: block; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(.2,.7,.2,1); transform-style: preserve-3d; }
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+@media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }
+.face { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 6cqw 6.5cqw; border-radius: 4.6cqw; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); }
+.face.back { transform: rotateY(180deg); }
+.card-logo { display: block; height: auto; object-fit: contain; }
+.card-logo.dark { filter: brightness(0); opacity: 0.88; }
+.logo-centre { position: absolute; left: 50%; top: 50%; width: 44%; transform: translate(-50%, -50%); }
+.logo-small { width: 15cqw; flex: none; }
+.dot { position: absolute; top: 6.4cqw; right: 6.4cqw; width: 2.2cqw; height: 2.2cqw; border-radius: 50%; }
+.dot.lime { background: var(--lime); }
+.dot.pink { background: #ec6aa8; }
+.back-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 4cqw; }
+.back-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+
+/* Team — Nocturne Classic */
+.team-front { background: #110c15; border: 1px solid rgba(255, 255, 255, 0.06); }
+.card-tagline { position: absolute; left: 0; right: 0; bottom: 7.5cqw; text-align: center; font-family: var(--label); font-weight: 600; font-size: 2.3cqw; letter-spacing: 0.38em; text-transform: uppercase; color: var(--pink); }
+.team-back { background: var(--pink); color: var(--ink); }
+.card-name { font-family: var(--display); font-size: 8.6cqw; line-height: 1; text-transform: uppercase; letter-spacing: 0.005em; }
+.card-title { margin-top: 2cqw; font-family: var(--label); font-weight: 600; font-size: 2.6cqw; letter-spacing: 0.3em; text-transform: uppercase; }
+.card-contact { display: flex; flex-direction: column; gap: 1.1cqw; font-size: 3cqw; line-height: 1.25; }
+.card-qr { display: block; width: 13.5cqw; height: 13.5cqw; }
+.card-qr svg { display: block; width: 100%; height: 100%; }
+
+/* Inner Circle — Brushed Silver */
+.silver {
+  color: var(--ink);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 1px, rgba(0, 0, 0, 0.035) 1px 2.5px),
+    linear-gradient(112deg, #cfcdd5 0%, #f4f2f7 20%, #aeabb8 36%, #efedf3 50%, #c7c4ce 66%, #f7f6f9 82%, #b8b5c1 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.silver-label { font-family: var(--label); font-weight: 600; font-size: 2.5cqw; letter-spacing: 0.34em; text-transform: uppercase; }
+.silver .logo-centre { width: 50%; }
+.silver-foot { display: flex; justify-content: space-between; font-family: var(--label); font-weight: 600; font-size: 2.4cqw; letter-spacing: 0.24em; text-transform: uppercase; }
+.silver-foot.plain { font-family: var(--body); font-weight: 500; font-size: 2.6cqw; letter-spacing: 0; text-transform: none; }
+.silver-title { font-family: var(--display); font-size: 9.4cqw; line-height: 0.95; text-transform: uppercase; }
+.silver-name { font-family: var(--label); font-weight: 600; font-size: 5cqw; letter-spacing: 0.08em; text-transform: uppercase; }
+.silver-meta { display: flex; gap: 4cqw; margin-top: 1.6cqw; font-family: var(--label); font-weight: 600; font-size: 2.4cqw; letter-spacing: 0.2em; text-transform: uppercase; }
+
+/* The Club / The Community (until their designs arrive) */
+.face.simple { background: var(--pink); color: var(--ink); }
+.face.simple.tier-community { background: var(--surface); color: var(--text); border: 1px solid var(--n-800); }
+.face.simple .member-tier { margin-top: 0; font-size: 9cqw; }
+.face.simple .member-name { margin-top: 0; font-size: 4.4cqw; }
+.face.simple .member-meta { margin-top: 0; font-size: 3.2cqw; }
+.simple-back { display: flex; flex-direction: column; gap: 1.5cqw; font-family: var(--label); text-transform: uppercase; letter-spacing: 0.2em; font-size: 2.6cqw; font-weight: 600; }
+.simple-back span:first-child { font-family: var(--display); font-size: 8cqw; letter-spacing: 0.01em; font-weight: 400; }
+
+.team-badge { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 9999px; background: var(--lime); color: var(--ink); font-family: var(--label); font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; vertical-align: 1px; }
+.team-form { border-top: 1px dashed var(--n-800); }
+.check strong { color: var(--text); }

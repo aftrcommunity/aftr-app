@@ -61,7 +61,8 @@ export default async function ThreadPage({
       <article className={`post post-main${t.hidden ? ' is-hidden' : ''}`}>
         <h1 className="display post-title">{t.title}</h1>
         <div className="post-by">
-          {t.author_name ?? 'A member'} · {timeAgo(t.created_at)}
+          {t.author_name ?? 'A member'}
+          {t.author_is_team && <span className="team-badge">Team</span>} · {timeAgo(t.created_at)}
           {t.hidden && ' · removed (only admins see this)'}
         </div>
         <p className="post-body">{t.body}</p>
@@ -75,7 +76,8 @@ export default async function ThreadPage({
         {replies.map((r) => (
           <article key={r.id} className={`post${r.hidden ? ' is-hidden' : ''}`}>
             <div className="post-by">
-              <strong>{r.author_name ?? 'A member'}</strong> · {timeAgo(r.created_at)}
+              <strong>{r.author_name ?? 'A member'}</strong>
+              {r.author_is_team && <span className="team-badge">Team</span>} · {timeAgo(r.created_at)}
               {r.hidden && ' · removed'}
             </div>
             <p className="post-body">{r.body}</p>
