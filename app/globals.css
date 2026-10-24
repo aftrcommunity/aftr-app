@@ -1,17 +1,31 @@
-/* AFTR. Community — Nocturne tokens, taken from the Claude Design file */
+/* AFTR. Community — brand tokens matched to aftr.community (css/style.css) */
+/* Fonts: the same self-hosted files as aftr.community (public/fonts) */
+@font-face { font-family: 'Anton'; src: url('/fonts/anton-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Bebas Neue'; src: url('/fonts/bebas-neue-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Oswald'; src: url('/fonts/oswald-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Oswald'; src: url('/fonts/oswald-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Oswald'; src: url('/fonts/oswald-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Oswald'; src: url('/fonts/oswald-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('/fonts/inter-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('/fonts/inter-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('/fonts/inter-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('/fonts/inter-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
 :root {
-  --bg: #130c17;
-  --bg-deep: #0b070d;
-  --surface: #1e1422;
-  --text: #f7eef4;
-  --pink: #f490c0;
-  --pink-hover: #f7a8cf;
+  --bg: #120c17;
+  --bg-deep: #0b070f;
+  --surface: #1d1524;
+  --text: #f8f1f7;
+  --pink: #f58fbe;
+  --pink-hover: #e96fa8;
+  --pink-soft: #f8afd0;
+  --ink: #1d1524;
   --pink-200: #f9c2dc;
   --pink-300: #f6a5cc;
   --pink-600: #c46c98;
   --pink-800: #4a2240;
-  --lime: #c6f432;
-  --lilac: #b896e6;
+  --lime: #b8ff3b;
+  --lilac: #b995e8;
   --n-200: #e8dbe4;
   --n-300: #cdbcc8;
   --n-400: #a8949f;
@@ -20,9 +34,9 @@
   --n-800: #33262f;
   --n-900: #241a26;
   --shadow-sm: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 2px 10px rgba(0, 0, 0, 0.35);
-  --display: 'Anton', 'Oswald', Impact, sans-serif;
-  --label: 'Oswald', 'Inter', sans-serif;
-  --body: 'Inter', system-ui, sans-serif;
+  --display: 'Anton', 'Bebas Neue', 'Oswald', sans-serif;
+  --label: 'Oswald', 'Bebas Neue', sans-serif;
+  --body: 'General Sans', 'Inter', -apple-system, sans-serif;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -68,16 +82,22 @@ button { font-family: inherit; color: inherit; }
 .btn-ghost { padding: 16px; background: transparent; border: 1px solid rgba(247, 238, 244, 0.35); color: var(--text); font-size: 14px; font-weight: 500; }
 .btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
 
-/* Welcome */
-.welcome { min-height: 100dvh; position: relative; overflow: hidden; display: flex; flex-direction: column; }
-.welcome-photo { position: absolute; inset: 0; background-size: cover; background-repeat: no-repeat; background-position: 50% 22%; }
-.welcome-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19, 12, 23, 0.15) 0%, rgba(19, 12, 23, 0.5) 45%, rgba(19, 12, 23, 0.94) 72%, var(--bg) 88%); }
-.welcome-body { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 20px; padding: calc(28px + var(--safe-top)) 24px calc(28px + var(--safe-bottom)); }
-.welcome-logo { width: 74px; align-self: flex-start; margin-bottom: auto; }
-.welcome h1 { margin-top: 12px; font-size: clamp(48px, 15vw, 64px); color: var(--pink); }
-.welcome p.lede { margin: 16px 0 0; max-width: 300px; font-size: 15px; line-height: 1.55; }
-.welcome .actions { display: flex; flex-direction: column; gap: 10px; }
-.wordmark { margin: 6px 0 0; font-family: var(--label); font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(247, 238, 244, 0.55); text-align: center; }
+/* Welcome — mirrors the aftr.community home hero (.hero / .hero-index) */
+.welcome { position: relative; min-height: 100dvh; display: flex; flex-direction: column; justify-content: flex-start; padding-top: clamp(9.5rem, 22vh, 13rem); overflow: hidden; background-color: var(--bg); background-size: cover; background-position: center 32%; color: var(--text); }
+.welcome::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18,12,23,0.15) 0%, rgba(18,12,23,0.55) 55%, rgba(18,12,23,0.96) 100%); }
+.welcome-logo { position: absolute; z-index: 2; width: 64px; top: calc(22px + var(--safe-top)); left: 6vw; }
+.welcome-content { position: relative; z-index: 2; max-width: 620px; padding: 0 6vw; }
+.hero-eyebrow { display: block; font-family: var(--label); text-transform: uppercase; letter-spacing: 0.25em; font-size: 0.85rem; font-weight: 700; color: var(--lime); margin-bottom: 0.8rem; }
+.welcome h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.05; margin: 0; color: var(--pink); text-shadow: 0 8px 40px rgba(0,0,0,0.6); font-size: clamp(2.6rem, 7vw, 4.6rem); }
+.hero-body { color: #fff; opacity: 0.92; max-width: 460px; margin: 1.3rem 0 2rem; font-size: 1.05rem; line-height: 1.6; }
+.site-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-family: var(--label); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; font-weight: 600; padding: 0.95rem 2rem; border-radius: 999px; border: 2px solid transparent; cursor: pointer; min-height: 48px; transition: transform .2s ease; }
+.site-btn:hover { transform: translateY(-2px); }
+.btn-fill { background: var(--pink); color: var(--ink); box-shadow: 0 16px 36px rgba(11,7,15,0.35); }
+.btn-fill:hover { background: var(--pink-hover); }
+.btn-outline { border-color: var(--text); color: var(--text); background: transparent; }
+.btn-outline:hover { border-color: var(--pink); color: var(--pink); }
+.welcome-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-wordmark { position: absolute; z-index: 2; right: 6vw; bottom: calc(2.4rem + var(--safe-bottom)); font-family: var(--label); text-transform: uppercase; letter-spacing: 0.25em; font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.5rem); color: var(--text); text-shadow: 0 4px 20px rgba(0,0,0,0.6); }
 
 /* Club shell */
 .topbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; padding: calc(14px + var(--safe-top)) 22px 12px; background: linear-gradient(var(--bg) 70%, rgba(19, 12, 23, 0)); }

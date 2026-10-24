@@ -1,30 +1,33 @@
 import Link from 'next/link';
 
-// Welcome / onboarding screen. The photo is the same hero used on
-// aftr.community (images/hero-index.jpg), per Eni.
+// Welcome / onboarding screen — mirrors the aftr.community home hero:
+// same photo (images/hero-index.jpg), scrim, fonts, copy and layout.
+// The only addition is "I'm already a member", which the app needs.
 export default function Welcome() {
   return (
-    <main className="welcome">
-      <div className="welcome-photo" style={{ backgroundImage: 'url(/images/welcome.jpg)' }} aria-hidden />
-      <div className="welcome-scrim" aria-hidden />
-      <div className="welcome-body">
-        <img className="welcome-logo" src="/images/logo.png" alt="AFTR." />
-        <div>
-          <div className="eyebrow">A safer space</div>
-          <h1 className="display">To dance, connect &amp; belong.</h1>
-          <p className="lede">An Accra-based members-only social club for womxn.</p>
-        </div>
-        <div className="actions">
-          <Link className="btn btn-primary" href="/join">
+    <main className="welcome" style={{ backgroundImage: 'url(/images/welcome.jpg)' }}>
+      <img className="welcome-logo" src="/images/logo.png" alt="AFTR." />
+      <div className="welcome-content">
+        <span className="hero-eyebrow">A Safer Space</span>
+        <h1>
+          To Dance
+          <br />
+          Connect &amp;
+          <br />
+          Belong.
+        </h1>
+        <p className="hero-body">An Accra-based members-only social club for womxn.</p>
+        <div className="welcome-actions">
+          <Link className="site-btn btn-fill" href="/join">
             Join the community →
           </Link>
           {/* Until logins are built this goes straight in, so the screens can be tested */}
-          <Link className="btn btn-ghost" href="/home">
+          <Link className="site-btn btn-outline" href="/home">
             I&apos;m already a member
           </Link>
-          <p className="wordmark">AFTR. Community</p>
         </div>
       </div>
+      <div className="hero-wordmark">AFTR. Community</div>
     </main>
   );
 }
