@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { type Album, photoUrl, photoPosition } from '../lib/gallery';
 
-export default function AlbumGrid({ album }: { album: Album }) {
+export default function AlbumGrid({ album, square = false }: { album: Album; square?: boolean }) {
   const [open, setOpen] = useState<number | null>(null);
   const startX = useRef<number | null>(null);
   const nums = Array.from({ length: album.photos }, (_, i) => i + 1);
@@ -30,11 +30,11 @@ export default function AlbumGrid({ album }: { album: Album }) {
 
   return (
     <>
-      <div className="pill-grid">
+      <div className={square ? 'square-grid' : 'pill-grid'}>
         {nums.map((n) => (
           <button
             key={n}
-            className={`pill${n % 4 === 2 || n % 4 === 3 ? ' tall' : ''}`}
+            className={square ? 'sq' : `pill${n % 4 === 2 || n % 4 === 3 ? ' tall' : ''}`}
             style={{ backgroundImage: `url(${photoUrl(album.slug, n, 'thumb')})`, backgroundPosition: photoPosition(album, n) }}
             onClick={() => setOpen(n)}
             aria-label={`${album.name}, photo ${n}`}

@@ -1,33 +1,31 @@
 import Link from 'next/link';
 
-// Welcome / onboarding screen — mirrors the aftr.community home hero:
-// same photo (images/hero-index.jpg), scrim, fonts, copy and layout.
-// The only addition is "I'm already a member", which the app needs.
+// Welcome / onboarding screen. Layout follows the Claude Design onboarding
+// screen; the photo is the aftr.community home hero (images/hero-index.jpg)
+// and the fonts are the website's own.
 export default function Welcome() {
   return (
-    <main className="welcome" style={{ backgroundImage: 'url(/images/welcome.jpg)' }}>
-      <img className="welcome-logo" src="/images/logo.png" alt="AFTR." />
-      <div className="welcome-content">
-        <span className="hero-eyebrow">A Safer Space</span>
-        <h1>
-          To Dance
-          <br />
-          Connect &amp;
-          <br />
-          Belong.
-        </h1>
-        <p className="hero-body">An Accra-based members-only social club for womxn.</p>
+    <main className="welcome">
+      <div className="welcome-photo" style={{ backgroundImage: 'url(/images/welcome.jpg)' }} aria-hidden />
+      <div className="welcome-scrim" aria-hidden />
+      <div className="welcome-body">
+        <img className="welcome-logo" src="/images/logo.png" alt="AFTR." />
+        <div>
+          <span className="hero-eyebrow">A safer space</span>
+          <h1>To dance, connect &amp; belong.</h1>
+          <p className="hero-body">An Accra-based members-only social club for womxn.</p>
+        </div>
         <div className="welcome-actions">
-          <Link className="site-btn btn-fill" href="/join">
+          <Link className="wbtn wbtn-fill" href="/join">
             Join the community →
           </Link>
           {/* Until logins are built this goes straight in, so the screens can be tested */}
-          <Link className="site-btn btn-outline" href="/home">
+          <Link className="wbtn wbtn-outline" href="/home">
             I&apos;m already a member
           </Link>
+          <p className="hero-wordmark">AFTR. Community</p>
         </div>
       </div>
-      <div className="hero-wordmark">AFTR. Community</div>
     </main>
   );
 }
