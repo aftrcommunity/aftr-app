@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { requireApprovedMember } from '../../../lib/member';
 import { AFTR_EVENTS, formatDate } from '../../../lib/events';
+import { canUseBackRoom } from '../../../lib/forum';
 
 // Time of day in Accra (GMT, no daylight saving)
 function greeting() {
@@ -13,6 +14,7 @@ function greeting() {
 export default async function Home() {
   const { profile } = await requireApprovedMember();
   const name = profile.display_name?.trim();
+  const backRoom = canUseBackRoom(profile);
   const today = new Date().toISOString().slice(0, 10);
   const next = AFTR_EVENTS.filter((e) => e.date && e.date >= today).slice(0, 2);
 
@@ -47,7 +49,12 @@ export default async function Home() {
       <div className="home-links">
         <Link href="/gallery" className="home-link"><span className="num">01</span>Gallery<span className="muted">Every AFTR. night so far</span></Link>
         <Link href="/events?tab=around-town" className="home-link"><span className="num">02</span>Around town<span className="muted">What else is on this weekend</span></Link>
-        <Link href="/card" className="home-link"><span className="num">03</span>Your card<span className="muted">Show it at the door</span></Link>
+        <Link href="/forum" className="home-link">
+          <span className="num">03</span>
+          <span className="home-link-title">The Back Room{!backRoom && <span className="tag tag-flag">Part of The Club</span>}</span>
+          <span className="muted">{backRoom ? 'Members talking now' : 'The members’ forum, with The Club and The Inner Circle'}</span>
+        </Link>
+        <Link href="/card" className="home-link"><span className="num">04</span>Your card<span className="muted">Show it at the door</span></Link>
       </div>
     </main>
   );

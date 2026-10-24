@@ -279,3 +279,20 @@ button { font-family: inherit; color: inherit; }
 .tool-btn:hover { border-color: var(--pink); color: var(--pink-soft); }
 .tool-admin { border-color: var(--lime); color: var(--lime); }
 .reply-form { margin-top: 18px; }
+
+/* Locked Back Room (The Community) */
+.tab .glyph { position: relative; display: inline-block; }
+.tab-lock { position: absolute; right: -9px; top: -3px; color: var(--lime); }
+.tab.locked { color: var(--n-500); }
+.home-link-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.home-link-title .tag { font-size: 8.5px; }
+.locked-card { padding: 18px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow-sm); border: 1px solid var(--pink-800); }
+.locked-head { display: flex; align-items: center; gap: 10px; color: var(--lime); }
+.locked-head .label { color: var(--lime); }
+.locked-card p { margin: 10px 0 0; font-size: 14px; line-height: 1.55; color: var(--n-200); }
+.locked-channels { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.locked-channels li { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 14px; background: var(--n-900); font-size: 12.5px; color: var(--n-400); filter: saturate(0.8); }
+.locked-tiers { display: flex; flex-direction: column; gap: 4px; margin-top: 14px; font-size: 12.5px; color: var(--n-300); }
+.locked-tiers strong { color: var(--pink-soft); margin-right: 6px; }
+.wbtn.wbtn-outline { border: 1px solid rgba(248, 241, 247, 0.35); background: transparent; color: var(--text); }
+.wbtn.wbtn-outline:hover { border-color: var(--lime); color: var(--lime); }

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import TabBar from '../../components/TabBar';
 import { requireApprovedMember, initials, TIER_LABEL } from '../../lib/member';
+import { canUseBackRoom } from '../../lib/forum';
 
 // Checked on every visit: never pre-built, never cached.
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ export default async function ClubLayout({ children }: { children: React.ReactNo
         </Link>
       </header>
       {children}
-      <TabBar />
+      <TabBar backRoomLocked={!canUseBackRoom(profile)} />
     </>
   );
 }
