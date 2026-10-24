@@ -13,7 +13,7 @@ export default function Welcome() {
         <div>
           <span className="hero-eyebrow">A safer space</span>
           <h1>To dance, connect &amp; belong.</h1>
-          <p className="hero-body">An Accra-based members-only social club for womxn.</p>
+          <p className="hero-body">An Accra-based members-only social club for women.</p>
         </div>
         <div className="welcome-actions">
           <Link className="wbtn wbtn-fill" href="/join">

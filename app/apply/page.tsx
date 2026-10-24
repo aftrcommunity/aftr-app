@@ -12,8 +12,7 @@ export default async function Apply() {
       <div className="eyebrow">Membership application</div>
       <h1 className="display" style={{ marginTop: 10 }}>Tell us about you.</h1>
       <p className="muted intro">
-        AFTR. is a members-only social club for womxn. Cis women, trans women and trans men are all welcome. A person on
-        the team reads every application, usually within a week.
+        AFTR. is a members-only social club for women. A person on the team reads every application, usually within a week.
       </p>
       <ApplyForm />
     </main>
