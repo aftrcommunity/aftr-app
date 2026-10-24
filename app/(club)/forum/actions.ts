@@ -22,7 +22,10 @@ export async function createThread(_prev: PostState, form: FormData): Promise<Po
 
   const supabase = await supabaseServer();
   const { data, error } = await supabase.from('forum_threads').insert({ channel, title, body }).select('id').single();
-  if (error || !data) return { error: 'That didn’t post. Please try again.' };
+  if (error || !data) {
+    console.error('createThread failed', error);
+    return { error: `That didn’t post. Please try again. (${error?.code ?? ''} ${error?.message ?? 'no details'})` };
+  }
   revalidatePath('/forum');
   redirect(`/forum/${data.id}`);
 }
@@ -32,7 +35,8 @@ export async function createReply(form: FormData) {
   const body = text(form, 'body', 4000);
   if (!threadId || !body) return;
   const supabase = await supabaseServer();
-  await supabase.from('forum_replies').insert({ thread_id: threadId, body });
+  const { error } = await supabase.from('forum_replies').insert({ thread_id: threadId, body });
+  if (error) console.error('createReply failed', error);
   revalidatePath(`/forum/${threadId}`);
 }
 
