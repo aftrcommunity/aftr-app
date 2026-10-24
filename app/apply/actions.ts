@@ -21,8 +21,11 @@ export async function submitApplication(_prev: ApplyState, form: FormData): Prom
   const referredBy = clean(form.get('referred_by'), 80);
   const why = clean(form.get('why_aftr'), 1000);
   const agreed = form.get('agree') === 'yes';
+  const tierPick = String(form.get('requested_tier') ?? 'community');
+  const requestedTier = ['community', 'club', 'inner_circle'].includes(tierPick) ? tierPick : 'community';
 
   if (fullName.length < 2) return { error: 'Please add your name.' };
+  if (displayName.length < 1) return { error: 'Please add a nickname — it’s how the app greets you.' };
   if (contact.length < 5) return { error: 'Please add a phone or WhatsApp number we can reach you on.' };
   if (why.length < 10) return { error: 'Tell us a little more about why you’d like to join (a sentence or two is fine).' };
   if (!agreed) return { error: 'Please agree to the Safer Spaces Policy to apply.' };
@@ -34,6 +37,7 @@ export async function submitApplication(_prev: ApplyState, form: FormData): Prom
     instagram: instagram || null,
     referred_by: referredBy || null,
     why_aftr: why,
+    requested_tier: requestedTier,
     agreed_policy_at: new Date().toISOString(),
   });
   if (error) {

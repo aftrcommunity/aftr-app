@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getMember, TIER_LABEL, type Status, type Tier } from '../../lib/member';
 import { review } from './actions';
+import { tierInfo } from '../../lib/tiers';
 
 type Row = {
   user_id: string;
@@ -17,6 +18,7 @@ type Row = {
   referred_by: string | null;
   why_aftr: string | null;
   submitted_at: string | null;
+  requested_tier: Tier | null;
   notes: string[];
 };
 
@@ -71,7 +73,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
               </div>
               <span className={`status status-${r.status}`}>
                 {STATUS_LABEL[r.status]}
-                {r.status === 'approved' && ` · ${TIER_LABEL[r.tier]}`}
+                {r.status === 'approved' && ` · ${TIER_LABEL[r.tier].replace('The ', '')}`}
               </span>
             </div>
 
@@ -79,6 +81,9 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
               {r.contact && (<><dt>Contact</dt><dd>{r.contact}</dd></>)}
               {r.instagram && (<><dt>Instagram</dt><dd>{r.instagram}</dd></>)}
               {r.referred_by && (<><dt>Referred by</dt><dd>{r.referred_by}</dd></>)}
+              {r.requested_tier && (
+                <><dt>Asked for</dt><dd>{tierInfo(r.requested_tier).name} · {tierInfo(r.requested_tier).price}</dd></>
+              )}
               {r.submitted_at && (<><dt>Applied</dt><dd>{when(r.submitted_at)}</dd></>)}
               {r.status === 'approved' && (<><dt>Paid until</dt><dd>{r.paid_until ?? 'Not recorded'}</dd></>)}
             </dl>
@@ -94,10 +99,10 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
               <div className="admin-row">
                 <label className="field">
                   <span className="label">Tier</span>
-                  <select name="tier" defaultValue={r.tier}>
-                    <option value="community">Community (free)</option>
+                  <select name="tier" defaultValue={r.status === 'applicant' ? (r.requested_tier ?? r.tier) : r.tier}>
+                    <option value="community">The Community (free)</option>
                     <option value="club">The Club</option>
-                    <option value="inner_circle">Inner Circle</option>
+                    <option value="inner_circle">The Inner Circle</option>
                   </select>
                 </label>
                 <label className="field">
@@ -105,6 +110,9 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
                   <input type="date" name="paid_until" defaultValue={r.paid_until ?? ''} />
                 </label>
               </div>
+              {r.status === 'applicant' && r.requested_tier && r.requested_tier !== 'community' && (
+                <p className="admin-hint">Asked for a paid tier. Approve as The Community until payment is confirmed, or set the paid-until date if she&apos;s paid.</p>
+              )}
               <label className="field">
                 <span className="label">Private note (optional)</span>
                 <input name="note" maxLength={1000} placeholder="e.g. Knows two members, came to WDGD 5" />

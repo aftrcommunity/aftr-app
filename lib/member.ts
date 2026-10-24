@@ -15,9 +15,9 @@ export type Profile = {
 };
 
 export const TIER_LABEL: Record<Tier, string> = {
-  community: 'Community',
+  community: 'The Community',
   club: 'The Club',
-  inner_circle: 'Inner Circle',
+  inner_circle: 'The Inner Circle',
 };
 
 // Who is signed in, their profile, and whether they've applied.
