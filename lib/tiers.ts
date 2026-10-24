@@ -14,14 +14,14 @@ export const TIERS: { id: Tier; name: string; price: string; note?: string; perk
     name: 'The Club',
     price: 'GHS 275 / year',
     note: 'Intro price',
-    perks: ['Everything in The Community', '50% off all AFTR. events', 'The members’ forum', 'Discounts with partners'],
+    perks: ['Everything in The Community', '50% off flagship AFTR. events', 'The members’ forum', 'Discounts with partners'],
   },
   {
     id: 'inner_circle',
     name: 'The Inner Circle',
     price: 'GHS 500 / year',
     note: 'Intro price',
-    perks: ['Everything in The Club', '100% off all AFTR. events'],
+    perks: ['Everything in The Club', 'Free entry to flagship AFTR. events'],
   },
 ];
 
