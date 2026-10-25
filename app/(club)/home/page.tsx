@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { requireApprovedMember } from '../../../lib/member';
-import { AFTR_EVENTS, formatDate } from '../../../lib/events';
+import { AFTR_EVENTS, formatDate, isUpcoming } from '../../../lib/events';
 import { canUseBackRoom } from '../../../lib/forum';
 
 // Time of day in Accra (GMT, no daylight saving)
@@ -15,8 +15,7 @@ export default async function Home() {
   const { profile } = await requireApprovedMember();
   const name = profile.display_name?.trim();
   const backRoom = canUseBackRoom(profile);
-  const today = new Date().toISOString().slice(0, 10);
-  const next = AFTR_EVENTS.filter((e) => e.date && e.date >= today).slice(0, 2);
+  const next = AFTR_EVENTS.filter((e) => e.date && isUpcoming(e.date)).slice(0, 2);
 
   return (
     <main className="page">

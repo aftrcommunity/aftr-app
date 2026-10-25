@@ -9,6 +9,7 @@ export type AftrEvent = {
   photo?: string;
   photoPosition?: string;
   ticketUrl?: string; // external ticket link, when there is one
+  ticketLabel?: string; // button text, e.g. 'Get pre-sale tickets'
   sample?: boolean; // placeholder content, not a confirmed event
   flagship?: boolean; // Club 50% off, Inner Circle free entry
 };
@@ -23,13 +24,16 @@ export const AFTR_EVENTS: AftrEvent[] = [
     photo: '/images/events/happily-ever-aftr.jpg',
     photoPosition: 'center 40%',
     flagship: true,
+    ticketUrl: 'https://aftr.hustlesasa.shop/products/6a99b617f32259134761a8ba',
   },
   {
     id: 'wdgd-7-detty-december',
     title: 'WDGD 7: Detty December',
     date: '2026-12-26',
-    tagline: 'Dress code: pink, lilac, white.',
+    tagline: 'Dress code: pink, lilac, white. Pre-sale tickets out now.',
     photo: '/media/gallery/wdgd-4-detty-december/thumb-01.jpg',
+    ticketUrl: 'https://aftr.hustlesasa.shop/products/6abaede545eaf3404f53eaff',
+    ticketLabel: 'Get pre-sale tickets',
   },
   {
     id: 'book-club-african-women-writers',
@@ -84,3 +88,11 @@ export const formatDate = (iso: string | null) => {
   const d = new Date(`${iso}T00:00:00Z`);
   return `${DAYS[d.getUTCDay()]} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
 };
+
+// Today's date in Accra (GMT all year), as YYYY-MM-DD
+export const todayInAccra = () =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Accra', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+
+// An event stays listed until the end of its day, then drops off automatically.
+// Events with no date yet (e.g. samples) always show.
+export const isUpcoming = (date: string | null) => !date || date >= todayInAccra();

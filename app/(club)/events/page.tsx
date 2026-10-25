@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AFTR_EVENTS, TOWN_EVENTS, formatDate } from '../../../lib/events';
+import { AFTR_EVENTS, TOWN_EVENTS, formatDate, isUpcoming } from '../../../lib/events';
 
 export default async function Events({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   const town = (await searchParams).tab === 'around-town';
@@ -23,7 +23,7 @@ export default async function Events({ searchParams }: { searchParams: Promise<{
             <span className="flag-inline">Flagship</span> events, The Club gets 50% off and The Inner Circle gets in free.
           </p>
           <div className="event-list">
-            {AFTR_EVENTS.map((e) => (
+            {AFTR_EVENTS.filter((e) => isUpcoming(e.date)).map((e) => (
               <article key={e.id} className="event-card">
                 {e.photo ? (
                   <div
@@ -46,7 +46,7 @@ export default async function Events({ searchParams }: { searchParams: Promise<{
                   <p className="event-tagline">{e.tagline}</p>
                   {e.ticketUrl ? (
                     <a className="event-btn" href={e.ticketUrl} target="_blank" rel="noopener noreferrer">
-                      Get tickets ↗
+                      {e.ticketLabel ?? 'Get tickets'} ↗
                     </a>
                   ) : (
                     <span className="event-btn is-off">{e.date ? 'Ticket link coming soon' : 'Details coming soon'}</span>
@@ -63,7 +63,7 @@ export default async function Events({ searchParams }: { searchParams: Promise<{
             community. Tickets are sold by each organiser.
           </p>
           <div className="town-list">
-            {TOWN_EVENTS.map((e) => (
+            {TOWN_EVENTS.filter((e) => isUpcoming(e.date)).map((e) => (
               <article key={e.id} className="town-card">
                 <div className="event-date">
                   {formatDate(e.date)} · {e.area}
