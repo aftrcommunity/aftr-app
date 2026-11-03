@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { requireApprovedMember } from '../../../lib/member';
 import { timeAgo } from '../../../lib/forum';
+import PushSetup from '../../../components/PushSetup';
 
 type N = {
   id: number; kind: string; actor_name: string | null; thread_id: number | null; conversation_id: number | null;
@@ -28,6 +29,7 @@ export default async function Notifications() {
   return (
     <main className="page">
       <h1 className="display">Notifications</h1>
+      <PushSetup />
       {list.length === 0 ? (
         <div className="soon"><p>Nothing yet. You’ll see replies, reactions, messages and report updates here.</p></div>
       ) : (

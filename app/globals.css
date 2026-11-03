@@ -503,3 +503,6 @@ button { font-family: inherit; color: inherit; }
 .note-row em { color: var(--pink-200); font-style: normal; }
 .note-row.unread { border-left: 3px solid var(--lime); }
 .note-excerpt { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--n-400); font-size: 12.5px; }
+.push-box { display: flex; flex-direction: column; gap: 10px; margin: 14px 0 6px; padding: 16px; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow-sm); }
+.push-box p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--n-300); }
+.push-box strong { color: var(--text); }

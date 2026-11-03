@@ -48,6 +48,7 @@ export type Reaction = { thread_id: number; reply_id: number | null; user_id: st
 
 // What a member can report something for (shown on the report form; the first part is the label)
 export const REPORT_CATEGORIES = [
+  { id: 'privacy', label: 'Sharing the club outside it, or outing someone', detail: 'Screenshots, posts, messages, photos or member names shared outside the club, or revealing who someone is without their permission.' },
   { id: 'harassment', label: 'Harassment, bullying or unwanted contact', detail: 'Targets, threatens, intimidates or shames someone.' },
   { id: 'hate', label: 'Hate speech or discrimination', detail: 'Attacks or demeans people for their race, ethnicity, religion, gender, sexual orientation or disability, or promotes violence against them.' },
   { id: 'sexual', label: 'Nudity or sexual activity', detail: 'Explicit images, non-consensual sexual content, or unwanted sexualisation.' },

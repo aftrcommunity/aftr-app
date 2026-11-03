@@ -28,5 +28,5 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   // Skip static files, images and gallery photos (photos check membership themselves)
-  matcher: ['/((?!_next/static|_next/image|images|fonts|media|favicon.ico|manifest.webmanifest|icon|apple-icon).*)'],
+  matcher: ['/((?!_next/static|_next/image|images|fonts|media|api/push|sw.js|favicon.ico|manifest.webmanifest|icon|apple-icon|badge).*)'],
 };

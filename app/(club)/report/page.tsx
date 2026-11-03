@@ -68,7 +68,8 @@ export default async function Report({ searchParams }: { searchParams: Promise<S
         <h1 className="display">Thanks for telling us</h1>
         <div className="notice" style={{ marginTop: 14 }}>
           <p style={{ margin: 0 }}>
-            The AFTR. team will review this against the <strong>Safer Spaces Policy</strong>, usually within 48 hours. If it
+            The AFTR. team will review this against the{' '}
+            <a href="https://aftr.community/safer-spaces-policy.html" className="inline-link" target="_blank" rel="noopener noreferrer">Safer Spaces Policy</a>, usually within 48 hours. If it
             breaks the policy we’ll remove it. Either way, we’ll let you know what we decided in your notifications.
           </p>
         </div>
