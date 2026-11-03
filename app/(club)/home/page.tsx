@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { requireApprovedMember } from '../../../lib/member';
 import { AFTR_EVENTS, formatDate, isUpcoming } from '../../../lib/events';
 import { canUseBackRoom } from '../../../lib/forum';
+import RenewalNotice from '../../../components/RenewalNotice';
 
 // Time of day in Accra (GMT, no daylight saving)
 function greeting() {
@@ -24,6 +25,7 @@ export default async function Home() {
         {name ? `, ${name}.` : '.'}
       </h1>
       <p className="muted intro">Here&apos;s what&apos;s coming up at AFTR.</p>
+      <RenewalNotice profile={profile} />
 
       <div className="home-section-head">
         <span className="eyebrow">Next up</span>
@@ -53,7 +55,10 @@ export default async function Home() {
           <span className="home-link-title">The Back Room{!backRoom && <span className="tag tag-flag">Part of The Club</span>}</span>
           <span className="muted">{backRoom ? 'Members talking now' : 'The members’ forum, with The Club and The Inner Circle'}</span>
         </Link>
-        <Link href="/card" className="home-link"><span className="num">04</span>Your card<span className="muted">Show it at the door</span></Link>
+        {backRoom && (
+          <Link href="/members" className="home-link"><span className="num">04</span>Members<span className="muted">Profiles and private messages</span></Link>
+        )}
+        <Link href="/card" className="home-link"><span className="num">{backRoom ? '05' : '04'}</span>Your card<span className="muted">Show it at the door</span></Link>
       </div>
     </main>
   );

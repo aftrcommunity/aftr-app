@@ -15,8 +15,13 @@ export default async function Forum({ searchParams }: { searchParams: Promise<{ 
     .order('last_activity_at', { ascending: false })
     .limit(50);
   if (channel) q = q.eq('channel', channel);
-  const { data } = await q;
-  const threads = (data ?? []) as Thread[];
+  const [{ data }, { data: hiddenRows }, { count: unreadMessages }] = await Promise.all([
+    q,
+    supabase.rpc('hidden_people'),
+    supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('kind', 'message').is('read_at', null),
+  ]);
+  const hidden = new Set<string>(((hiddenRows ?? []) as string[]).map(String));
+  const threads = ((data ?? []) as Thread[]).filter((t) => !hidden.has(t.author_id));
 
   return (
     <main className="page">
@@ -24,6 +29,14 @@ export default async function Forum({ searchParams }: { searchParams: Promise<{ 
         <h1 className="display">The Back Room</h1>
       </div>
       <p className="muted intro">House rule: what&apos;s said here stays here. Screenshots shared outside the club mean removal.</p>
+
+      <nav className="room-links" aria-label="The Back Room">
+        <Link href="/members" className="room-link">Members</Link>
+        <Link href="/messages" className="room-link">
+          Messages{unreadMessages ? <span className="count-dot">{unreadMessages}</span> : null}
+        </Link>
+        <Link href="/profile" className="room-link">Your profile</Link>
+      </nav>
 
       <div className="chips" role="group" aria-label="Channels">
         <Link href="/forum" className={`chip${!channel ? ' on' : ''}`}>All</Link>
@@ -53,6 +66,7 @@ export default async function Forum({ searchParams }: { searchParams: Promise<{ 
               <span className="thread-title">{t.title}</span>
               <span className="thread-excerpt">{t.body}</span>
               <span className="thread-meta">
+                {(t.photos?.length ?? 0) > 0 && <>📷 {t.photos!.length} · </>}
                 {t.reply_count} {t.reply_count === 1 ? 'reply' : 'replies'} · started by {t.author_name ?? 'a member'}
                 {t.author_is_team && <span className="team-badge">Team</span>}
                 {t.hidden && ' · removed (only admins see this)'}

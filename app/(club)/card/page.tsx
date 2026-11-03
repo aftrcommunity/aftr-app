@@ -2,6 +2,8 @@ import Link from 'next/link';
 import QRCode from 'qrcode';
 import { requireApprovedMember } from '../../../lib/member';
 import MemberCard, { type CardData } from '../../../components/MemberCard';
+import RenewalNotice from '../../../components/RenewalNotice';
+import { canUseBackRoom } from '../../../lib/forum';
 
 const fmt = (iso: string | null | undefined) =>
   iso ? new Date(`${iso.slice(0, 10)}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : null;
@@ -34,7 +36,8 @@ export default async function Card() {
   return (
     <main className="page">
       <h1 className="display">Membership</h1>
-      <p className="muted intro">Show this at the door. Tap a card to turn it over.</p>
+      <p className="muted intro">Show this at the door. Tap a card to turn it over. Your card shows your full name; members see your nickname.</p>
+      <RenewalNotice profile={profile} />
 
       {cards.map((c) => (
         <section key={c.card.variant} className="card-section">
@@ -47,6 +50,11 @@ export default async function Card() {
         <p className="muted" style={{ marginTop: 4 }}>Paid until {fmt(profile.paid_until) ?? 'not recorded yet'}.</p>
       )}
 
+      {canUseBackRoom(profile) && (
+        <Link href="/profile" className="wbtn wbtn-outline" style={{ marginTop: 18 }}>
+          Your profile and nickname
+        </Link>
+      )}
       {profile.is_admin && (
         <Link href="/admin" className="wbtn wbtn-fill" style={{ marginTop: 18 }}>
           Open the review queue →

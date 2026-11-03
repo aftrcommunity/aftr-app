@@ -23,7 +23,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string; 
       headers: {
         'Content-Type': 'image/jpeg',
         // Members' photos: never cached by shared caches, never indexed.
-        'Cache-Control': 'private, max-age=3600',
+        'Cache-Control': 'private, max-age=604800, immutable',
         'X-Robots-Tag': 'noindex, noimageindex',
       },
     });

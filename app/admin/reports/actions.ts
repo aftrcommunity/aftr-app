@@ -3,17 +3,14 @@
 import { revalidatePath } from 'next/cache';
 import { supabaseServer } from '../../../lib/supabase/server';
 
-// Both checked by the database: only admins can moderate or resolve.
+// Checked by the database: only admins can resolve. "Remove" hides the post,
+// reply or message, and the person who reported it is told the outcome.
 export async function handleReport(form: FormData) {
-  const reportId = Number(form.get('report_id'));
-  const threadId = Number(form.get('thread_id') || 0);
-  const replyId = Number(form.get('reply_id') || 0);
-  const remove = form.get('remove') === 'yes';
   const supabase = await supabaseServer();
-  if (remove) {
-    await supabase.rpc('moderate_post', replyId ? { reply: replyId, hide: true } : { thread: threadId, hide: true });
-  }
-  await supabase.rpc('resolve_report', { report: reportId });
+  await supabase.rpc('resolve_report', {
+    report: Number(form.get('report_id')),
+    decision: form.get('remove') === 'yes' ? 'removed' : 'kept',
+  });
   revalidatePath('/admin/reports');
   revalidatePath('/admin');
 }

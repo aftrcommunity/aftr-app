@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { getMember, TIER_LABEL, type Status, type Tier } from '../../lib/member';
 import { review, setTeam } from './actions';
 import { tierInfo } from '../../lib/tiers';
+import SubmitButton from '../../components/SubmitButton';
 
 type Row = {
   user_id: string;
@@ -36,33 +37,59 @@ const STATUS_LABEL: Record<Status, string> = {
 const when = (iso: string | null) =>
   iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'Africa/Accra' }) : '';
 
-export default async function Admin({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
+// The Everyone list, split by group
+const GROUPS = [
+  { id: 'all', label: 'All', test: (_r: Row) => true },
+  { id: 'team', label: 'Team', test: (r: Row) => !!r.is_team },
+  { id: 'community', label: 'The Community', test: (r: Row) => r.status === 'approved' && r.tier === 'community' },
+  { id: 'club', label: 'The Club', test: (r: Row) => r.status === 'approved' && r.tier === 'club' },
+  { id: 'inner_circle', label: 'The Inner Circle', test: (r: Row) => r.status === 'approved' && r.tier === 'inner_circle' },
+  { id: 'other', label: 'Waitlist, declined, paused', test: (r: Row) => ['waitlisted', 'declined', 'suspended'].includes(r.status) },
+] as const;
+
+export default async function Admin({ searchParams }: { searchParams: Promise<{ view?: string; g?: string; note?: string }> }) {
   const { supabase, user, profile } = await getMember();
   if (!user) redirect('/login');
   if (!profile?.is_admin) redirect('/home');
 
-  const view = (await searchParams).view === 'all' ? 'all' : 'review';
+  const sp = await searchParams;
+  const view = sp.view === 'all' ? 'all' : 'review';
+  const group = GROUPS.find((g) => g.id === sp.g) ?? GROUPS[0];
   const { data, error } = await supabase.rpc('admin_applicants');
-  const rows = ((data ?? []) as Row[]).filter((r) => (view === 'review' ? r.status === 'applicant' : true));
-  const waiting = ((data ?? []) as Row[]).filter((r) => r.status === 'applicant').length;
-  const { data: reports } = await supabase.rpc('admin_reports');
+  const everyone = (data ?? []) as Row[];
+  const rows = everyone.filter((r) => (view === 'review' ? r.status === 'applicant' : group.test(r)));
+  const waiting = everyone.filter((r) => r.status === 'applicant').length;
+  const [{ data: reports }, { data: renewals }] = await Promise.all([supabase.rpc('admin_reports'), supabase.rpc('admin_renewals')]);
   const openReports = (reports ?? []).length;
+  const dueRenewals = (renewals ?? []).length;
+  const here = view === 'all' ? `/admin?view=all${group.id === 'all' ? '' : `&g=${group.id}`}` : '/admin';
 
   return (
     <main className="page admin">
       <Link href="/card" className="back">← Back to the app</Link>
       <h1 className="display">Review queue</h1>
-      <p className="muted intro">Only the AFTR. team can see this page. Notes are never shown to applicants.</p>
+      <p className="muted intro">Only admins can see this page. Notes are never shown to applicants. Approving someone sends them a welcome email.</p>
       <div className="seg" style={{ marginBottom: 16 }}>
         <Link href="/admin" className={view === 'review' ? 'on' : ''}>To review ({waiting})</Link>
         <Link href="/admin?view=all" className={view === 'all' ? 'on' : ''}>Everyone</Link>
         <Link href="/admin/reports">Reports ({openReports})</Link>
+        <Link href="/admin/renewals">Renewals ({dueRenewals})</Link>
       </div>
+      {view === 'all' && (
+        <div className="chips" role="group" aria-label="Show" style={{ marginBottom: 14 }}>
+          {GROUPS.map((g) => (
+            <Link key={g.id} href={`/admin?view=all${g.id === 'all' ? '' : `&g=${g.id}`}`} className={`chip${group.id === g.id ? ' on' : ''}`}>
+              {g.label} ({everyone.filter(g.test).length})
+            </Link>
+          ))}
+        </div>
+      )}
+      {sp.note && <p className="notice" style={{ marginBottom: 14 }}>{sp.note}</p>}
 
       {error && <p className="form-error">Couldn&apos;t load applications: {error.message}</p>}
       {!error && rows.length === 0 && (
         <div className="soon">
-          <p>{view === 'review' ? 'Nobody waiting. All caught up.' : 'No applications yet.'}</p>
+          <p>{view === 'review' ? 'Nobody waiting. All caught up.' : 'Nobody in this group yet.'}</p>
         </div>
       )}
 
@@ -103,6 +130,8 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
 
             <form action={review} className="admin-form">
               <input type="hidden" name="user_id" value={r.user_id} />
+              <input type="hidden" name="prev_status" value={r.status} />
+              <input type="hidden" name="back" value={here} />
               <div className="admin-row">
                 <label className="field">
                   <span className="label">Tier</span>
@@ -125,9 +154,9 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
                 <input name="note" maxLength={1000} placeholder="e.g. Knows two members, came to WDGD 5" />
               </label>
               <div className="admin-actions">
-                <button name="decision" value="approved" className="wbtn wbtn-fill">
+                <SubmitButton name="decision" value="approved" className="wbtn wbtn-fill" pending="Saving…">
                   {r.status === 'approved' ? 'Save' : 'Approve'}
-                </button>
+                </SubmitButton>
                 {r.status !== 'approved' && (
                   <>
                     <button name="decision" value="waitlisted" className="wbtn wbtn-outline">Waitlist</button>
@@ -142,6 +171,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
             {r.status === 'approved' && (
               <form action={setTeam} className="admin-form team-form">
                 <input type="hidden" name="user_id" value={r.user_id} />
+                <input type="hidden" name="back" value={here} />
                 <label className="check">
                   <input type="checkbox" name="is_team" defaultChecked={!!r.is_team} />
                   <span>

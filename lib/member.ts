@@ -28,9 +28,11 @@ export const TIER_LABEL: Record<Tier, string> = {
 // Who is signed in, their profile, and whether they've applied.
 export async function getMember() {
   const supabase = await supabaseServer();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims verifies the sign-in token (locally when the project uses signing keys),
+  // which is much faster than asking Supabase on every page.
+  const { data } = await supabase.auth.getClaims();
+  const claims = data?.claims;
+  const user = claims?.sub ? { id: claims.sub, email: (claims.email as string | undefined) ?? null } : null;
   if (!user) return { supabase, user: null, profile: null, applied: false };
 
   const [{ data: profile }, { data: application }] = await Promise.all([

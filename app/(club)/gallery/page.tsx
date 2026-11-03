@@ -20,7 +20,7 @@ export default async function Gallery({ searchParams }: { searchParams: Promise<
           <Link
             key={a.slug}
             href={withLayout(`/gallery/${a.slug}`, layout)}
-            className={square ? 'sq' : `pill${i % 4 === 1 || i % 4 === 2 ? ' tall' : ''}`}
+            className={square ? 'sq' : 'pill'}
             style={{ backgroundImage: `url(${photoUrl(a.slug, 1, 'thumb')})`, backgroundPosition: photoPosition(a, 1) }}
           >
             <span className={square ? 'sq-caption' : 'pill-caption'}>

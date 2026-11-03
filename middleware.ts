@@ -20,11 +20,13 @@ export async function middleware(request: NextRequest) {
       },
     },
   );
-  await supabase.auth.getUser();
+  // getClaims checks the sign-in token locally where it can (no round trip),
+  // and refreshes it when it has expired.
+  await supabase.auth.getClaims();
   return response;
 }
 
 export const config = {
-  // Skip static files and images
-  matcher: ['/((?!_next/static|_next/image|images|fonts|favicon.ico|manifest.webmanifest).*)'],
+  // Skip static files, images and gallery photos (photos check membership themselves)
+  matcher: ['/((?!_next/static|_next/image|images|fonts|media|favicon.ico|manifest.webmanifest|icon|apple-icon).*)'],
 };

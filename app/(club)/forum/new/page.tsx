@@ -13,8 +13,8 @@ export default async function NewThread({ searchParams }: { searchParams: Promis
     <main className="page">
       <Link href="/forum" className="back">← The Back Room</Link>
       <h1 className="display" style={{ fontSize: 34 }}>Start a conversation</h1>
-      <p className="muted intro">Posting as {profile.display_name || 'a member'}. Only members of The Club and The Inner Circle can see this.</p>
-      <NewThreadForm defaultChannel={isChannel(c) ? c : 'general'} />
+      <p className="muted intro">Posting as {profile.display_name || 'a member'}. Only The Club, The Inner Circle and the team can see this.</p>
+      <NewThreadForm defaultChannel={isChannel(c) ? c : 'general'} userId={profile.id} />
     </main>
   );
 }
