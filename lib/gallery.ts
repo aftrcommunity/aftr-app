@@ -9,9 +9,18 @@ export type Album = {
   photos: number;
   // Photos whose faces sit near the top of the frame (same fix as the website)
   topCrop?: number[];
+  // Or an exact focus point per photo, e.g. { 2: 'center 30%' }
+  focus?: Record<number, string>;
 };
 
 export const ALBUMS: Album[] = [
+  {
+    slug: 'happily-ever-aftr',
+    index: '10',
+    name: 'Happily Ever AFTR.',
+    photos: 9,
+    focus: { 1: 'center 22%', 2: 'center 28%', 3: 'center 30%', 5: 'center 25%', 6: 'center 35%', 8: 'center 40%' },
+  },
   { slug: 'wdgd-5-y2k', index: '09', name: 'WDGD 5: Y2K', photos: 6 },
   { slug: 'the-girls-trip', index: '08', name: "The Girl's Trip by AFTR.", photos: 6 },
   { slug: 'wdgd-4-detty-december', index: '07', name: 'WDGD4: Detty December', photos: 6 },
@@ -31,4 +40,4 @@ export const photoUrl = (slug: string, n: number, size: 'thumb' | 'full' = 'full
   `/media/gallery/${slug}/${size === 'thumb' ? 'thumb-' : ''}${pad(n)}.jpg`;
 
 export const photoPosition = (album: Album, n: number) =>
-  album.topCrop?.includes(n) ? 'center top' : 'center';
+  album.focus?.[n] ?? (album.topCrop?.includes(n) ? 'center top' : 'center');
