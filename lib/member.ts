@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { redirect } from 'next/navigation';
 import { supabaseServer } from './supabase/server';
 
@@ -26,7 +27,8 @@ export const TIER_LABEL: Record<Tier, string> = {
 };
 
 // Who is signed in, their profile, and whether they've applied.
-export async function getMember() {
+// cache(): the frame and the page share one lookup per visit instead of asking twice
+export const getMember = cache(async function getMember() {
   const supabase = await supabaseServer();
   // getClaims verifies the sign-in token (locally when the project uses signing keys),
   // which is much faster than asking Supabase on every page.
@@ -40,7 +42,7 @@ export async function getMember() {
     supabase.from('applications').select('user_id').eq('user_id', user.id).maybeSingle(),
   ]);
   return { supabase, user, profile: profile as Profile | null, applied: !!application };
-}
+});
 
 // Where a signed-in person belongs, based on their status.
 export function homeFor(profile: Profile | null, applied: boolean) {
